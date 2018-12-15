@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import {Home} from '../Home/Home';
 import {About} from '../About/About';
+import {BookList} from '../Booklist/BookList'
 
 export class NavBar extends Component{
     render(){
@@ -31,6 +32,9 @@ export class NavBar extends Component{
                                     <li className="nav-item">
                                         <Link className="nav-link" to="/about">About</Link>
                                     </li>
+                                    <li className="nav-item">
+                                        <Link className="nav-link" to="/books">Books</Link>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -39,6 +43,7 @@ export class NavBar extends Component{
                     <hr />
                     <Route exact path='/' component={Home} />
                     <Route  path='/about' component={About} />
+                    <Route  path='/books' component={BookList} />
                 </div>
             </Router>
         )
