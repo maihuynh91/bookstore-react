@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import * as axios from 'axios';
 import './BookList.css';
 import ReactPaginate from 'react-paginate';
+import { Book } from '../Book/Book';
 
 const url = 'http://localhost:3004/books';
 
@@ -27,8 +28,7 @@ export class BookList extends Component {
     axios.get(url+params).then(response => {
       this.setState({ 
         books: response.data,
-        pagination: {
-        
+        pagination: { 
           ...this.state.pagination, //create new object from this.state.pagination
           total: +response.headers['x-total-count']
         }
@@ -64,7 +64,6 @@ export class BookList extends Component {
   };
   
   render() {
-    console.log(this.state.books);
     let renderedBookList = this.state.books.map((book, id) => {
       return (
         <div
@@ -73,40 +72,7 @@ export class BookList extends Component {
           }`}
           key={id}
         >
-          <div className="thumbnail card">
-            <div className="img-event">
-              <img
-                className="group list-group-image img-fluid"
-                src={book.image_url}
-                alt=""
-              />
-            </div>
-            <div className="caption card-body title">
-              <h4 className="group card-title inner list-group-item-heading">
-                {book.title}
-              </h4>
-              <p className="group inner list-group-item-text">
-                Author:
-                <span>
-                  {book.authors.join(', ')}
-                </span>
-              </p>
-            </div>
-            <div className="caption card-body title">
-              <p className="group inner list-group-item-text">
-                {this.getFirst100Words(book.description)}
-              </p>
-            </div>
-            <div>
-              <div className="caption card-body body">
-                <div className="col-xs-6 col-md-4">
-                  <a className="btn btn-success" href="/">
-                    Get Info
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
+        <Book book={book} handleChoseBookList={this.props.handleChoseBookList}/>
         </div>
       );
     });

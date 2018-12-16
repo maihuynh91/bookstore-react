@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Slider} from '../Slider/Slider'
+import {Footer} from '../Footer/Footer';
 
 export class Home extends Component {
     render() {
@@ -28,8 +29,9 @@ export class Home extends Component {
                         </section>
 
                     </section>
-
-
+                <hr/>
+                <Footer />
+                <hr />
                 </main>
             </div>
         );
