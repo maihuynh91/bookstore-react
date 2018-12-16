@@ -12,31 +12,33 @@ export class BookList extends Component {
     this.state = { 
       listView: true, 
       books: [],
-      pagination: {count:10, page: 1, total: null} 
+      pagination: {count:10, page: 1, total: null},
+      searchItem:''
       };
-    this.loadBooks(this.state.pagination.count, this.state.pagination.page);
+    this.loadBooks();
 
   }
 
-  loadBooks(count, page){
-    count = count ? count : 10;
-    page = page ? page : 1;
-
-    let params = `?_page=${page}&_limit=${count}`;
+  loadBooks(){
+   //console.log(`pagination here : ${...this.state.pagination}`)
+    let params = `?_page=${this.state.pagination.page}&_limit=${this.state.pagination.count}`;
+    if(this.state.searchItem) {params+= `&title_like=${this.state.searchItem}`
+      };
     axios.get(url+params).then(response => {
       this.setState({ 
         books: response.data,
         pagination: {
-          count : count,
-          page: page,
+        
+          ...this.state.pagination, //create new object from this.state.pagination
           total: +response.headers['x-total-count']
         }
       });
     });
   };
 
-  handlePageClick = data => {
-    this.loadBooks(this.state.pagination.count, data.selected + 1);
+  handlePageClick = reactPaginatePage => {
+    this.setState({pagination: {...this.state.pagination, page: reactPaginatePage.selected + 1}},
+    this.loadBooks )
   };
 
 
@@ -52,6 +54,10 @@ export class BookList extends Component {
     }
     return words;
   };
+
+  handleSearchInput = event => {
+    this.setState({ searchItem: event.target.value, pagination:{...this.state.pagination, page:1}}, this.loadBooks);
+  }
 
   gridView = () => {
     this.setState({ listView: false });
@@ -93,7 +99,7 @@ export class BookList extends Component {
             </div>
             <div>
               <div className="caption card-body body">
-                <div className="col-xs-12 col-md-6">
+                <div className="col-xs-6 col-md-4">
                   <a className="btn btn-success" href="/">
                     Get Info
                   </a>
@@ -134,11 +140,11 @@ export class BookList extends Component {
               </div>
             </div>
           </div>
-
+        <div className='row'>
           <ReactPaginate 
               containerClassName="pagination pagination-lg"
               breakClassName="page-item"
-              breakLabel={<a className="page-link">...</a>}
+              breakLabel={<span className="page-link">...</span>}
               pageClassName="page-item"
               activeClassName="active"
               activeLinkClassName="disabled"
@@ -155,7 +161,16 @@ export class BookList extends Component {
               marginPagesDisplayed={2}
               onPageChange={this.handlePageClick}
             />
+          </div>
+          <div>
+            <input 
+              type="text"
+              value={this.state.searchItem}
+              placeholder="Enter text"
+              onChange={this.handleSearchInput}
+            />
 
+          </div>
           <div id="products" className="row view-group">
             {renderedBookList}
           </div>
