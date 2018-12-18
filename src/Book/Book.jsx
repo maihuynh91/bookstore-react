@@ -1,6 +1,16 @@
 import React, {Component} from 'react';
 
 export class Book extends Component{
+
+  getFirst100Words = words => {
+    console.log(words);
+    let wordTokens = words.split(' ');
+    if (wordTokens.length > 50) {
+      return wordTokens.slice(0, 50).join(' ') + '...';
+    }
+    return words;
+  };
+
     render(){
         return (
             <div className="thumbnail card">
@@ -24,7 +34,7 @@ export class Book extends Component{
             </div>
             <div className="caption card-body title">
               <p className="group inner list-group-item-text">
-                {this.props.book.description}
+                {this.getFirst100Words(this.props.book.description)}
               </p>
             </div>
             <div>
@@ -33,7 +43,10 @@ export class Book extends Component{
                   <p className="btn btn-success" onClick = {() => this.props.handleChoseBookList(this.props.book)}>
                     Buy Book
                   </p>
-                  <a className="btn btn-success" href="/yourcart">
+                  <p className="btn btn-success" onClick = {() => this.props.handleRemove(this.props.book)}>
+                    Remove Item
+                  </p>
+                  <a className="btn btn-success">
                     {this.props.book.price}
                   </a>
                 </div>

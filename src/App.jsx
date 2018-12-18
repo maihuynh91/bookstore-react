@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import { Home } from './Home/Home';
-import { About } from './About/About';
+import { SignUp } from './User/SignUp';
 import { BookList } from './Booklist/BookList'
 import { YourCartPage } from './CartActions/YourCartPage'
 
@@ -16,6 +16,15 @@ class App extends Component {
 
   handleChoseBookList = (book) => {
     this.setState({ choseBookList: [...this.state.choseBookList, book] })
+  }
+
+  handleRemove = (book) => {
+    const newChoseBookList = this.state.choseBookList.filter(buyItem => {
+      return buyItem !== book;
+    })
+    this.setState({ 
+      choseBookList: [...newChoseBookList]
+    })
   }
 
 
@@ -53,7 +62,7 @@ class App extends Component {
                       <Link className="nav-link" to="/"> Home </Link>
                     </li>
                     <li className="nav-item">
-                      <Link className="nav-link" to="/about">About</Link>
+                      <Link className="nav-link" to="/signup">Sign Up</Link>
                     </li>
                     <li className="nav-item">
                       <Link className="nav-link" to="/books">Books</Link>
@@ -69,9 +78,11 @@ class App extends Component {
 
             <hr />
             <Route exact path='/' component={Home} />
-            <Route path='/about' component={About} />
-            <Route path='/books' render={(props) => { return <BookList {...props} handleChoseBookList={(book) => this.handleChoseBookList(book)} /> }} />
-            <Route path='/yourcart' render={(props) => { return <YourCartPage {...props} choseBookList={this.state.choseBookList} /> }} />
+            <Route path='/signup' component={SignUp} />
+            <Route path='/books' render={(props) => { return <BookList {...props} handleChoseBookList={(book) => this.handleChoseBookList(book)} 
+                                                                                  handleRemove={(book) => this.handleRemove(book)} /> }} />
+            <Route path='/yourcart' render={(props) => { return <YourCartPage {...props} choseBookList={this.state.choseBookList}
+                                                                   handleRemove={(book) => this.handleRemove(book)}  /> }} />
           </div>
 
         </Router>

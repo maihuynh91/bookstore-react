@@ -46,14 +46,14 @@ export class BookList extends Component {
     this.setState({ listView: true });
   };
 
-  getFirst100Words = words => {
-    console.log(words);
-    let wordTokens = words.split(' ');
-    if (wordTokens.length > 50) {
-      return wordTokens.slice(0, 50).join(' ') + '...';
-    }
-    return words;
-  };
+  // getFirst100Words = words => {
+  //   console.log(words);
+  //   let wordTokens = words.split(' ');
+  //   if (wordTokens.length > 30) {
+  //     return wordTokens.slice(0, 30).join(' ') + '...';
+  //   }
+  //   return words;
+  // };
 
   handleSearchInput = event => {
     this.setState({ searchItem: event.target.value, pagination:{...this.state.pagination, page:1}}, this.loadBooks);
@@ -72,7 +72,7 @@ export class BookList extends Component {
           }`}
           key={id}
         >
-        <Book book={book} handleChoseBookList={this.props.handleChoseBookList}/>
+        <Book book={book} handleChoseBookList={this.props.handleChoseBookList} handleRemove={this.props.handleRemove}/>
         </div>
       );
     });
